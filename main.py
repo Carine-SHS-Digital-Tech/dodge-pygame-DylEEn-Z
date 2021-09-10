@@ -6,11 +6,11 @@ import pygame                               # Imports pygame and other libraries
 
 pygame.init()                               # Pygame is initialised (starts running)
 
-screen = pygame.display.set_mode([700,500]) # Set the width and height of the screen [width,height]
-pygame.display.set_caption("My Game")       # Name your window
+screen = pygame.display.set_mode([7000,50]) # Set the width and height of the screen [width,height]
+pygame.display.set_caption("Dylan's Game")       # Name your window
 done = False                                # Loop until the user clicks the close button.
 clock = pygame.time.Clock()                 # Used to manage how fast the screen updates
-black    = (   0,   0,   0)                 # Define some colors using rgb values.  These can be
+black    = (   0,   0,   0)                 # Define some colors usi`ng rgb values.  These can be
 white    = ( 255, 255, 255)                 # used throughout the game instead of using rgb values.
 
 # Define additional Functions and Procedures here
