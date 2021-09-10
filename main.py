@@ -6,7 +6,7 @@ import pygame                               # Imports pygame and other libraries
 
 pygame.init()                               # Pygame is initialised (starts running)
 
-screen = pygame.display.set_mode([7000,50]) # Set the width and height of the screen [width,height]
+screen = pygame.display.set_mode([700,500]) # Set the width and height of the screen [width,height]
 pygame.display.set_caption("Dylan's Game")       # Name your window
 done = False                                # Loop until the user clicks the close button.
 clock = pygame.time.Clock()                 # Used to manage how fast the screen updates
