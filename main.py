@@ -12,7 +12,7 @@ class FallingObject(pygame.sprite.Sprite):
         self.image.set_colorkey(black)              # Set a colour to be transparent
 
         self.rect = self.image.get_rect()           # these lines create the rectangular sprite,
-        self.rect.x = random.randint(0,670)          # the same size as the image surface and then
+        self.rect.x = random.randint(0,670)         # the same size as the image surface and then
         self.rect.y = 0                             # assigns it coordinates
 
     def setImage(self,graphicSelected):
@@ -21,7 +21,28 @@ class FallingObject(pygame.sprite.Sprite):
 
     def moveFallingObjects(self,distance):
         if self.rect.y <= 470:
-            self.rect.y = self.rect.y + distance
+          self.rect.y = self.rect.y + distance
+
+    def deleteFallingObjects(self):
+       if self.rect.y > 470:                         # check if sprite at bottom of window
+             self.kill()                             # kill (delete) object if it is at bottom
+
+
+class Character(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.Surface([50,68])         # note the change in the surface size of the larger sprite
+        self.image.set_colorkey(black)
+
+        self.rect = self.image.get_rect()
+        self.rect.x = 310
+        self.rect.y = 420
+
+        self.image.blit(pygame.image.load("Superhero.png"), (0,0))
+
+    def moveCharacter(self,movement):
+        if self.rect.x >= and self.rect.x <= 645
+            self.rect.x = self.rect.x + movement
 
 pygame.init()                               # Pygame is initialised (starts running)
 
@@ -36,8 +57,13 @@ white    = ( 255, 255, 255)                 # used throughout the game instead o
 # Define additional Functions and Procedures here
 allFallingObjects = pygame.sprite.Group()
 
-nextApple = pygame
+nextApple = pygame.time.get_ticks() + 2500   # how long until first apple appears (milliseconds) equal to 2.5 seconds
 
+charactersGroup = pygame.sprite.Group()
+character = Character()
+charactersGroup.add(character)
+
+movement = 0
 
 # -------- Main Program Loop -----------
 while done == False:
@@ -47,16 +73,22 @@ while done == False:
             done = True                     # Flag that we are done so we exit this loop
 
     # Update sprites here
-    nextObject = FallingObject()
-    nextObject.setImage("Apple.png ")
+    if pygame.time.get_ticks() > nextApple:
+        nextObject = FallingObject()
+        nextObject.setImage("Apple.png ")
+        nextApple = pygame.time.get_ticks() + 1500
 
-    allFallingObjects.add(nextObject)
+        allFallingObjects.add(nextObject)
 
-    for eachObject in (allFallingObjects.sprites()):
-        eachObject.moveFallingObjects(5)
+    for eachObject in (allFallingObjects.sprites()):     # loops through each object in a group
+        eachObject.moveFallingObjects(5)                 # 5 = 5pixels down in window
+
+
+        eachObject.deleteFallingObjects()
 
     screen.blit(background_image, [0,0])
     allFallingObjects.draw(screen)
+    charactersGroup.draw(screen)
     pygame.display.flip()                   # Go ahead and update the screen with what we've drawn.
     clock.tick(20)                          # Limit to 20 frames per second
 
