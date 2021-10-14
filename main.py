@@ -21,11 +21,15 @@ class FallingObject(pygame.sprite.Sprite):
 
     def moveFallingObjects(self,distance):
         if self.rect.y <= 470:
-          self.rect.y = self.rect.y + distance
+            self.rect.y = self.rect.y + distance
 
-    def deleteFallingObjects(self):
-       if self.rect.y > 470:                         # check if sprite at bottom of window
-             self.kill()                             # kill (delete) object if it is at bottom
+    def deleteFallingObjects(self,oldscore):
+        if self.rect.y > 470:                         # check if sprite at bottom of window
+            self.kill()                             # kill (delete) object if it is at bottom
+            newscore = oldscore + 1
+            return newscore
+        else:
+            return oldscore
 
 
 class Character(pygame.sprite.Sprite):
@@ -57,6 +61,7 @@ done = False                                # Loop until the user clicks the clo
 clock = pygame.time.Clock()                 # Used to manage how fast the screen updates
 black    = (   0,   0,   0)                 # Define some colors usi`ng rgb values.  These can be
 white    = ( 255, 255, 255)                 # used throughout the game instead of using rgb values.
+font = pygame.font.Font(None, 36)           # define font size
 
 # Define additional Functions and Procedures here
 allFallingObjects = pygame.sprite.Group()
@@ -69,6 +74,7 @@ charactersGroup.add(character)
 
 movement = 0
 
+score = 0
 # -------- Main Program Loop -----------
 while done == False:
 
@@ -80,8 +86,8 @@ while done == False:
                 movement = -5
             if event.key == pygame.K_RIGHT:
                 movement = 5
-            if event.key == pygame.KEYUP:
-                movement = 0
+        if event.key == pygame.KEYUP:
+            movement = 0
 
     # Update sprites here
     if pygame.time.get_ticks() > nextApple:
@@ -95,13 +101,17 @@ while done == False:
         eachObject.moveFallingObjects(5)                 # 5 = 5pixels down in window
 
 
-        eachObject.deleteFallingObjects()
+        eachObject.deleteFallingObjects(score)
+
+    character.moveCharacter(movement)
 
     screen.blit(background_image, [0,0])
     allFallingObjects.draw(screen)
     charactersGroup.draw(screen)
+    textImg = font.render(str(score),1,white)
+    screen.blit( textImg, (10,10) )
     pygame.display.flip()                   # Go ahead and update the screen with what we've drawn.
-    clock.tick(20)                          # Limit to 20 frames per second
+    clock.tick(40)                          # Limit to 20 frames per second
 
 pygame.quit()                               # Close the window and quit.
 
